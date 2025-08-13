@@ -423,6 +423,7 @@ pub fn main() {
         <dyn Fs>::set_global(fs.clone(), cx);
 
         GitHostingProviderRegistry::set_global(git_hosting_provider_registry, cx);
+        #[cfg(not(feature = "writer"))]
         git_hosting_providers::init(cx);
 
         OpenListener::set_global(cx, open_listener.clone());
@@ -462,12 +463,14 @@ pub fn main() {
         .detach();
         let node_runtime = NodeRuntime::new(client.http_client(), Some(shell_env_loaded_rx), rx);
 
+        #[cfg(not(feature = "writer"))]
         debug_adapter_extension::init(extension_host_proxy.clone(), cx);
         language::init(cx);
         languages::init(languages.clone(), node_runtime.clone(), cx);
         let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));
         let workspace_store = cx.new(|cx| WorkspaceStore::new(client.clone(), cx));
 
+        #[cfg(not(feature = "writer"))]
         language_extension::init(
             language_extension::LspAccess::ViaWorkspaces({
                 let workspace_store = workspace_store.clone();
@@ -493,7 +496,9 @@ pub fn main() {
 
         zed::init(cx);
         project::Project::init(&client, cx);
+        #[cfg(not(feature = "writer"))]
         debugger_ui::init(cx);
+        #[cfg(not(feature = "writer"))]
         debugger_tools::init(cx);
         client::init(&client, cx);
         let telemetry = client.telemetry();
@@ -534,6 +539,7 @@ pub fn main() {
         AppState::set_global(Arc::downgrade(&app_state), cx);
 
         auto_update::init(client.http_client(), cx);
+        #[cfg(not(feature = "writer"))]
         dap_adapters::init(cx);
         auto_update_ui::init(cx);
         reliability::init(
@@ -552,7 +558,9 @@ pub fn main() {
             cx.background_executor().clone(),
         );
         command_palette::init(cx);
+        #[cfg(not(feature = "writer"))]
         let copilot_language_server_id = app_state.languages.next_language_server_id();
+        #[cfg(not(feature = "writer"))]
         copilot::init(
             copilot_language_server_id,
             app_state.fs.clone(),
@@ -560,6 +568,7 @@ pub fn main() {
             app_state.node_runtime.clone(),
             cx,
         );
+        #[cfg(not(feature = "writer"))]
         supermaven::init(app_state.client.clone(), cx);
         language_model::init(app_state.client.clone(), cx);
         language_models::init(app_state.user_store.clone(), app_state.client.clone(), cx);
@@ -578,7 +587,7 @@ pub fn main() {
             false,
             cx,
         );
-        assistant_tools::init(app_state.client.http_client(), cx);
+        #[cfg(not(feature = "writer"))]
         repl::init(app_state.fs.clone(), cx);
         extension_host::init(
             extension_host_proxy,
@@ -594,6 +603,7 @@ pub fn main() {
         app_state.languages.set_theme(cx.theme().clone());
         editor::init(cx);
         image_viewer::init(cx);
+        #[cfg(not(feature = "writer"))]
         repl::notebook::init(cx);
         diagnostics::init(cx);
 
@@ -605,25 +615,33 @@ pub fn main() {
         file_finder::init(cx);
         tab_switcher::init(cx);
         outline::init(cx);
+        #[cfg(not(feature = "writer"))]
         project_symbols::init(cx);
         project_panel::init(cx);
         outline_panel::init(cx);
+        #[cfg(not(feature = "writer"))]
         tasks_ui::init(cx);
         snippets_ui::init(cx);
         channel::init(&app_state.client.clone(), app_state.user_store.clone(), cx);
         search::init(cx);
         vim::init(cx);
+        #[cfg(not(feature = "writer"))]
         terminal_view::init(cx);
         journal::init(app_state.clone(), cx);
+        #[cfg(not(feature = "writer"))]
         language_selector::init(cx);
+        #[cfg(not(feature = "writer"))]
         toolchain_selector::init(cx);
         theme_selector::init(cx);
         settings_profile_selector::init(cx);
+        #[cfg(not(feature = "writer"))]
         language_tools::init(cx);
         call::init(app_state.client.clone(), app_state.user_store.clone(), cx);
         notifications::init(app_state.client.clone(), app_state.user_store.clone(), cx);
         collab_ui::init(&app_state, cx);
+        #[cfg(not(feature = "writer"))]
         git_ui::init(cx);
+        #[cfg(not(feature = "writer"))]
         jj_ui::init(cx);
         feedback::init(cx);
         markdown_preview::init(cx);

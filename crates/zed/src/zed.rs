@@ -16,12 +16,14 @@ use assets::Assets;
 use breadcrumbs::Breadcrumbs;
 use client::zed_urls;
 use collections::VecDeque;
+#[cfg(not(feature = "writer"))]
 use debugger_ui::debugger_panel::DebugPanel;
 use editor::ProposedChangesEditorToolbar;
 use editor::{Editor, MultiBuffer};
 use feature_flags::{FeatureFlagAppExt, PanicFeatureFlag};
 use futures::future::Either;
 use futures::{StreamExt, channel::mpsc, select_biased};
+#[cfg(not(feature = "writer"))]
 use git_ui::git_panel::GitPanel;
 use git_ui::project_diff::ProjectDiffToolbar;
 use gpui::{
@@ -60,6 +62,7 @@ use std::{
     sync::Arc,
     sync::atomic::{self, AtomicBool},
 };
+#[cfg(not(feature = "writer"))]
 use terminal_view::terminal_panel::{self, TerminalPanel};
 use theme::{ActiveTheme, ThemeSettings};
 use ui::{PopoverMenuHandle, prelude::*};
@@ -363,29 +366,37 @@ pub fn initialize_workspace(
         let vim_mode_indicator = cx.new(|cx| vim::ModeIndicator::new(window, cx));
         let image_info = cx.new(|_cx| ImageInfo::new(workspace));
 
-        let lsp_tool_menu_handle = PopoverMenuHandle::default();
-        let lsp_tool =
-            cx.new(|cx| LspTool::new(workspace, lsp_tool_menu_handle.clone(), window, cx));
-        workspace.register_action({
-            move |_, _: &lsp_tool::ToggleMenu, window, cx| {
-                lsp_tool_menu_handle.toggle(window, cx);
-            }
-        });
-
         let cursor_position =
             cx.new(|_| go_to_line::cursor_position::CursorPosition::new(workspace));
         workspace.status_bar().update(cx, |status_bar, cx| {
             status_bar.add_left_item(search_button, window, cx);
-            status_bar.add_left_item(lsp_tool, window, cx);
             status_bar.add_left_item(diagnostic_summary, window, cx);
             status_bar.add_left_item(activity_indicator, window, cx);
             status_bar.add_right_item(edit_prediction_button, window, cx);
-            status_bar.add_right_item(active_buffer_language, window, cx);
-            status_bar.add_right_item(active_toolchain_language, window, cx);
             status_bar.add_right_item(vim_mode_indicator, window, cx);
             status_bar.add_right_item(cursor_position, window, cx);
             status_bar.add_right_item(image_info, window, cx);
         });
+        #[cfg(not(feature = "writer"))]
+        {
+            let lsp_tool_menu_handle = PopoverMenuHandle::default();
+            let lsp_tool =
+                cx.new(|cx| LspTool::new(workspace, lsp_tool_menu_handle.clone(), window, cx));
+            workspace.register_action({
+                move |_, _: &lsp_tool::ToggleMenu, window, cx| {
+                    lsp_tool_menu_handle.toggle(window, cx);
+                }
+            });
+            let active_buffer_language =
+                cx.new(|_| language_selector::ActiveBufferLanguage::new(workspace));
+            let active_toolchain_language =
+                cx.new(|cx| toolchain_selector::ActiveToolchain::new(workspace, window, cx));
+            workspace.status_bar().update(cx, |status_bar, cx| {
+                status_bar.add_left_item(lsp_tool, window, cx);
+                status_bar.add_right_item(active_buffer_language, window, cx);
+                status_bar.add_right_item(active_toolchain_language, window, cx);
+            });
+        }
 
         let handle = cx.entity().downgrade();
         window.on_window_should_close(cx, move |window, cx| {
@@ -398,7 +409,7 @@ pub fn initialize_workspace(
                 .unwrap_or(true)
         });
 
-        initialize_panels(prompt_builder.clone(), window, cx);
+        call_initialize_panels(prompt_builder.clone(), window, cx);
         register_actions(app_state.clone(), workspace, window, cx);
 
         workspace.focus_handle(cx).focus(window);
@@ -506,6 +517,7 @@ fn show_software_emulation_warning_if_needed(
     }
 }
 
+#[cfg(not(feature = "writer"))]
 fn initialize_panels(
     prompt_builder: Arc<PromptBuilder>,
     window: &mut Window,
@@ -517,6 +529,7 @@ fn initialize_panels(
         let project_panel = ProjectPanel::load(workspace_handle.clone(), cx.clone());
         let outline_panel = OutlinePanel::load(workspace_handle.clone(), cx.clone());
         let terminal_panel = TerminalPanel::load(workspace_handle.clone(), cx.clone());
+        #[cfg(not(feature = "writer"))]
         let git_panel = GitPanel::load(workspace_handle.clone(), cx.clone());
         let channels_panel =
             collab_ui::collab_panel::CollabPanel::load(workspace_handle.clone(), cx.clone());
@@ -526,6 +539,7 @@ fn initialize_panels(
             workspace_handle.clone(),
             cx.clone(),
         );
+        #[cfg(not(feature = "writer"))]
         let debug_panel = DebugPanel::load(workspace_handle.clone(), cx);
 
         let (
@@ -540,11 +554,13 @@ fn initialize_panels(
         ) = futures::try_join!(
             project_panel,
             outline_panel,
+            #[cfg(not(feature = "writer"))]
             git_panel,
             terminal_panel,
             channels_panel,
             chat_panel,
             notification_panel,
+            #[cfg(not(feature = "writer"))]
             debug_panel,
         )?;
 
@@ -581,6 +597,75 @@ fn initialize_panels(
             // functions so that we only register the actions once.
             //
             // Once we ship `assistant2` we can push this back down into `agent::agent_panel::init`.
+            if is_assistant2_enabled {
+                <dyn AgentPanelDelegate>::set_global(
+                    Arc::new(agent_ui::ConcreteAssistantPanelDelegate),
+                    cx,
+                );
+
+                workspace
+                    .register_action(agent_ui::AgentPanel::toggle_focus)
+                    .register_action(agent_ui::InlineAssistant::inline_assist);
+            }
+        })?;
+
+        anyhow::Ok(())
+    })
+    .detach();
+}
+
+#[cfg(feature = "writer")]
+fn initialize_panels_writer(
+    prompt_builder: Arc<PromptBuilder>,
+    window: &mut Window,
+    cx: &mut Context<Workspace>,
+) {
+    let prompt_builder = prompt_builder.clone();
+
+    cx.spawn_in(window, async move |workspace_handle, cx| {
+        let project_panel = ProjectPanel::load(workspace_handle.clone(), cx.clone());
+        let outline_panel = OutlinePanel::load(workspace_handle.clone(), cx.clone());
+        let channels_panel =
+            collab_ui::collab_panel::CollabPanel::load(workspace_handle.clone(), cx.clone());
+        let chat_panel =
+            collab_ui::chat_panel::ChatPanel::load(workspace_handle.clone(), cx.clone());
+        let notification_panel = collab_ui::notification_panel::NotificationPanel::load(
+            workspace_handle.clone(),
+            cx.clone(),
+        );
+
+        let (project_panel, outline_panel, channels_panel, chat_panel, notification_panel) =
+            futures::try_join!(
+                project_panel,
+                outline_panel,
+                channels_panel,
+                chat_panel,
+                notification_panel,
+            )?;
+
+        workspace_handle.update_in(cx, |workspace, window, cx| {
+            workspace.add_panel(project_panel, window, cx);
+            workspace.add_panel(outline_panel, window, cx);
+            workspace.add_panel(channels_panel, window, cx);
+            workspace.add_panel(chat_panel, window, cx);
+            workspace.add_panel(notification_panel, window, cx);
+        })?;
+
+        let is_assistant2_enabled = !cfg!(test);
+        let agent_panel = if is_assistant2_enabled {
+            let agent_panel =
+                agent_ui::AgentPanel::load(workspace_handle.clone(), prompt_builder, cx.clone())
+                    .await?;
+            Some(agent_panel)
+        } else {
+            None
+        };
+
+        workspace_handle.update_in(cx, |workspace, window, cx| {
+            if let Some(agent_panel) = agent_panel {
+                workspace.add_panel(agent_panel, window, cx);
+            }
+
             if is_assistant2_enabled {
                 <dyn AgentPanelDelegate>::set_global(
                     Arc::new(agent_ui::ConcreteAssistantPanelDelegate),
@@ -967,7 +1052,9 @@ fn initialize_pane(
             toolbar.add_item(syntax_tree_item, window, cx);
             let migration_banner = cx.new(|cx| MigrationBanner::new(workspace, cx));
             toolbar.add_item(migration_banner, window, cx);
+            #[cfg(not(feature = "writer"))]
             let project_diff_toolbar = cx.new(|cx| ProjectDiffToolbar::new(workspace, cx));
+            #[cfg(not(feature = "writer"))]
             toolbar.add_item(project_diff_toolbar, window, cx);
             let agent_diff_toolbar = cx.new(AgentDiffToolbar::new);
             toolbar.add_item(agent_diff_toolbar, window, cx);
@@ -4477,9 +4564,11 @@ mod tests {
             language::init(cx);
             editor::init(cx);
             collab_ui::init(&app_state, cx);
+            #[cfg(not(feature = "writer"))]
             git_ui::init(cx);
             project_panel::init(cx);
             outline_panel::init(cx);
+            #[cfg(not(feature = "writer"))]
             terminal_view::init(cx);
             copilot::copilot_chat::init(
                 app_state.fs.clone(),
@@ -4508,7 +4597,9 @@ mod tests {
                 &app_state.client.clone().into(),
             );
             project::debugger::dap_store::DapStore::init(&app_state.client.clone().into(), cx);
+            #[cfg(not(feature = "writer"))]
             debugger_ui::init(cx);
+            #[cfg(not(feature = "writer"))]
             initialize_workspace(app_state.clone(), prompt_builder, cx);
             search::init(cx);
             app_state
@@ -4687,4 +4778,22 @@ mod tests {
             "BUG FOUND: Project settings were overwritten when opening via command - original custom content was lost"
         );
     }
+}
+
+#[cfg(feature = "writer")]
+fn call_initialize_panels(
+	prompt_builder: Arc<PromptBuilder>,
+	window: &mut Window,
+	cx: &mut Context<Workspace>,
+) {
+	initialize_panels_writer(prompt_builder, window, cx);
+}
+
+#[cfg(not(feature = "writer"))]
+fn call_initialize_panels(
+	prompt_builder: Arc<PromptBuilder>,
+	window: &mut Window,
+	cx: &mut Context<Workspace>,
+) {
+	initialize_panels(prompt_builder, window, cx);
 }

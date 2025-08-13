@@ -18,6 +18,10 @@ path = "src/zed-main.rs"
 name = "zed"
 path = "src/main.rs"
 
+[features]
+default = ["writer"]
+writer = []
+
 [dependencies]
 activity_indicator.workspace = true
 agent.workspace = true
