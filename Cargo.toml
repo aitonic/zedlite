@@ -41,26 +41,14 @@ members = [
     "crates/command_palette_hooks",
     "crates/component",
     "crates/context_server",
-    "crates/copilot",
     "crates/crashes",
     "crates/credentials_provider",
-    "crates/dap",
-    "crates/dap_adapters",
     "crates/db",
-    "crates/debug_adapter_extension",
-    "crates/debugger_tools",
-    "crates/debugger_ui",
     "crates/deepseek",
-    "crates/diagnostics",
     "crates/docs_preprocessor",
     "crates/editor",
     "crates/eval",
     "crates/explorer_command_injector",
-    "crates/extension",
-    "crates/extension_api",
-    "crates/extension_cli",
-    "crates/extension_host",
-    "crates/extensions_ui",
     "crates/feature_flags",
     "crates/feedback",
     "crates/file_finder",
@@ -69,7 +57,6 @@ members = [
     "crates/fsevent",
     "crates/fuzzy",
     "crates/git",
-    "crates/git_hosting_providers",
     "crates/git_ui",
     "crates/go_to_line",
     "crates/google_ai",
@@ -89,27 +76,19 @@ members = [
     "crates/jj",
     "crates/jj_ui",
     "crates/journal",
-    "crates/language",
-    "crates/language_extension",
-    "crates/language_model",
-    "crates/language_models",
-    "crates/language_selector",
-    "crates/language_tools",
-    "crates/languages",
     "crates/livekit_api",
     "crates/livekit_client",
     "crates/lmstudio",
-    "crates/lsp",
     "crates/markdown",
     "crates/markdown_preview",
     "crates/media",
     "crates/menu",
     "crates/migrator",
     "crates/mistral",
+    "crates/manuscript_panel",
     "crates/multi_buffer",
     "crates/nc",
     "crates/net",
-    "crates/node_runtime",
     "crates/notifications",
     "crates/ollama",
     "crates/onboarding",
@@ -120,10 +99,8 @@ members = [
     "crates/panel",
     "crates/paths",
     "crates/picker",
-    "crates/prettier",
     "crates/project",
     "crates/project_panel",
-    "crates/project_symbols",
     "crates/prompt_store",
     "crates/proto",
     "crates/recent_projects",
@@ -132,47 +109,35 @@ members = [
     "crates/release_channel",
     "crates/remote",
     "crates/remote_server",
-    "crates/repl",
     "crates/reqwest_client",
     "crates/rich_text",
     "crates/rope",
     "crates/rpc",
-    "crates/rules_library",
     "crates/schema_generator",
     "crates/search",
-    "crates/semantic_index",
     "crates/semantic_version",
     "crates/session",
     "crates/settings",
     "crates/settings_profile_selector",
     "crates/settings_ui",
-    "crates/snippet",
-    "crates/snippet_provider",
-    "crates/snippets_ui",
     "crates/sqlez",
     "crates/sqlez_macros",
     "crates/story",
     "crates/storybook",
     "crates/streaming_diff",
     "crates/sum_tree",
-    "crates/supermaven",
-    "crates/supermaven_api",
     "crates/svg_preview",
     "crates/tab_switcher",
     "crates/task",
     "crates/tasks_ui",
     "crates/telemetry",
     "crates/telemetry_events",
-    "crates/terminal",
-    "crates/terminal_view",
     "crates/text",
     "crates/theme",
-    "crates/theme_extension",
     "crates/theme_importer",
     "crates/theme_selector",
     "crates/time_format",
     "crates/title_bar",
-    "crates/toolchain_selector",
     "crates/ui",
     "crates/ui_input",
     "crates/ui_macros",
@@ -180,8 +145,6 @@ members = [
     "crates/util",
     "crates/util_macros",
     "crates/vercel",
-    "crates/vim",
-    "crates/vim_mode_setting",
     "crates/watch",
     "crates/web_search",
     "crates/web_search_providers",
@@ -191,24 +154,11 @@ members = [
     "crates/x_ai",
     "crates/zed",
     "crates/zed_actions",
+    "crates/zedlite_app",
     "crates/zeta",
     "crates/zeta_cli",
     "crates/zlog",
     "crates/zlog_settings",
-
-    #
-    # Extensions
-    #
-
-    "extensions/emmet",
-    "extensions/glsl",
-    "extensions/html",
-    "extensions/proto",
-    "extensions/ruff",
-    "extensions/slash-commands-example",
-    "extensions/snippets",
-    "extensions/test-extension",
-    "extensions/toml",
 
     #
     # Tooling
@@ -217,7 +167,7 @@ members = [
     "tooling/workspace-hack",
     "tooling/xtask",
 ]
-default-members = ["crates/zed"]
+default-members = ["crates/zedlite_app"]
 
 [workspace.package]
 publish = false
@@ -271,20 +221,22 @@ command_palette_hooks = { path = "crates/command_palette_hooks" }
 component = { path = "crates/component" }
 context_server = { path = "crates/context_server" }
 copilot = { path = "crates/copilot" }
-crashes = { path = "crates/crashes" }
-credentials_provider = { path = "crates/credentials_provider" }
 dap = { path = "crates/dap" }
 dap_adapters = { path = "crates/dap_adapters" }
-db = { path = "crates/db" }
 debug_adapter_extension = { path = "crates/debug_adapter_extension" }
 debugger_tools = { path = "crates/debugger_tools" }
 debugger_ui = { path = "crates/debugger_ui" }
-deepseek = { path = "crates/deepseek" }
 diagnostics = { path = "crates/diagnostics" }
-editor = { path = "crates/editor" }
 extension = { path = "crates/extension" }
+extension_api = { path = "crates/extension_api" }
+extension_cli = { path = "crates/extension_cli" }
 extension_host = { path = "crates/extension_host" }
 extensions_ui = { path = "crates/extensions_ui" }
+crashes = { path = "crates/crashes" }
+credentials_provider = { path = "crates/credentials_provider" }
+db = { path = "crates/db" }
+deepseek = { path = "crates/deepseek" }
+editor = { path = "crates/editor" }
 feature_flags = { path = "crates/feature_flags" }
 feedback = { path = "crates/feedback" }
 file_finder = { path = "crates/file_finder" }
@@ -322,12 +274,13 @@ language_models = { path = "crates/language_models" }
 language_selector = { path = "crates/language_selector" }
 language_tools = { path = "crates/language_tools" }
 languages = { path = "crates/languages" }
+lsp = { path = "crates/lsp" }
 livekit_api = { path = "crates/livekit_api" }
 livekit_client = { path = "crates/livekit_client" }
 lmstudio = { path = "crates/lmstudio" }
-lsp = { path = "crates/lsp" }
 markdown = { path = "crates/markdown" }
 markdown_preview = { path = "crates/markdown_preview" }
+manuscript_panel = { path = "crates/manuscript_panel" }
 svg_preview = { path = "crates/svg_preview" }
 media = { path = "crates/media" }
 menu = { path = "crates/menu" }
@@ -336,20 +289,18 @@ mistral = { path = "crates/mistral" }
 multi_buffer = { path = "crates/multi_buffer" }
 nc = { path = "crates/nc" }
 net = { path = "crates/net" }
-node_runtime = { path = "crates/node_runtime" }
 notifications = { path = "crates/notifications" }
+node_runtime = { path = "crates/node_runtime" }
 ollama = { path = "crates/ollama" }
 onboarding = { path = "crates/onboarding" }
 open_ai = { path = "crates/open_ai" }
 open_router = { path = "crates/open_router", features = ["schemars"] }
 outline = { path = "crates/outline" }
 outline_panel = { path = "crates/outline_panel" }
+prettier = { path = "crates/prettier" }
 panel = { path = "crates/panel" }
 paths = { path = "crates/paths" }
 picker = { path = "crates/picker" }
-plugin = { path = "crates/plugin" }
-plugin_macros = { path = "crates/plugin_macros" }
-prettier = { path = "crates/prettier" }
 settings_profile_selector = { path = "crates/settings_profile_selector" }
 project = { path = "crates/project" }
 project_panel = { path = "crates/project_panel" }
@@ -362,43 +313,42 @@ release_channel = { path = "crates/release_channel" }
 remote = { path = "crates/remote" }
 remote_server = { path = "crates/remote_server" }
 repl = { path = "crates/repl" }
+rules_library = { path = "crates/rules_library" }
 reqwest_client = { path = "crates/reqwest_client" }
 rich_text = { path = "crates/rich_text" }
 rope = { path = "crates/rope" }
 rpc = { path = "crates/rpc" }
-rules_library = { path = "crates/rules_library" }
 search = { path = "crates/search" }
-semantic_index = { path = "crates/semantic_index" }
 semantic_version = { path = "crates/semantic_version" }
 session = { path = "crates/session" }
-settings = { path = "crates/settings" }
-settings_ui = { path = "crates/settings_ui" }
 snippet = { path = "crates/snippet" }
 snippet_provider = { path = "crates/snippet_provider" }
 snippets_ui = { path = "crates/snippets_ui" }
+settings = { path = "crates/settings" }
+settings_ui = { path = "crates/settings_ui" }
 sqlez = { path = "crates/sqlez" }
 sqlez_macros = { path = "crates/sqlez_macros" }
 story = { path = "crates/story" }
 storybook = { path = "crates/storybook" }
 streaming_diff = { path = "crates/streaming_diff" }
-sum_tree = { path = "crates/sum_tree" }
 supermaven = { path = "crates/supermaven" }
 supermaven_api = { path = "crates/supermaven_api" }
+sum_tree = { path = "crates/sum_tree" }
 tab_switcher = { path = "crates/tab_switcher" }
+terminal = { path = "crates/terminal" }
+terminal_view = { path = "crates/terminal_view" }
 task = { path = "crates/task" }
 tasks_ui = { path = "crates/tasks_ui" }
 telemetry = { path = "crates/telemetry" }
 telemetry_events = { path = "crates/telemetry_events" }
-terminal = { path = "crates/terminal" }
-terminal_view = { path = "crates/terminal_view" }
 text = { path = "crates/text" }
 theme = { path = "crates/theme" }
 theme_extension = { path = "crates/theme_extension" }
 theme_importer = { path = "crates/theme_importer" }
 theme_selector = { path = "crates/theme_selector" }
 time_format = { path = "crates/time_format" }
-title_bar = { path = "crates/title_bar" }
 toolchain_selector = { path = "crates/toolchain_selector" }
+title_bar = { path = "crates/title_bar" }
 ui = { path = "crates/ui" }
 ui_input = { path = "crates/ui_input" }
 ui_macros = { path = "crates/ui_macros" }
@@ -408,7 +358,6 @@ util_macros = { path = "crates/util_macros" }
 vercel = { path = "crates/vercel" }
 vim = { path = "crates/vim" }
 vim_mode_setting = { path = "crates/vim_mode_setting" }
-
 watch = { path = "crates/watch" }
 web_search = { path = "crates/web_search" }
 web_search_providers = { path = "crates/web_search_providers" }
@@ -418,6 +367,7 @@ worktree = { path = "crates/worktree" }
 x_ai = { path = "crates/x_ai" }
 zed = { path = "crates/zed" }
 zed_actions = { path = "crates/zed_actions" }
+zed_env_vars = { path = "crates/zed_env_vars" }
 zeta = { path = "crates/zeta" }
 zlog = { path = "crates/zlog" }
 zlog_settings = { path = "crates/zlog_settings" }
@@ -534,6 +484,7 @@ ordered-float = "2.1.1"
 palette = { version = "0.7.5", default-features = false, features = ["std"] }
 parking_lot = "0.12.1"
 partial-json-fixer = "0.5.3"
+pet-virtualenv = { git = "https://github.com/microsoft/python-environment-tools.git", rev = "845945b830297a50de0e24020b980a65e4820559" }
 parse_int = "0.9"
 pathdiff = "0.2"
 pet = { git = "https://github.com/microsoft/python-environment-tools.git", rev = "845945b830297a50de0e24020b980a65e4820559" }
@@ -868,3 +819,5 @@ ignored = [
     "documented",
     "workspace-hack",
 ]
+
+# Read the file content to understand workspace structure

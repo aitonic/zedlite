@@ -16,7 +16,6 @@ doctest = false
 test-support = [
     "buffer_diff/test-support",
     "gpui/test-support",
-    "language/test-support",
     "text/test-support",
     "util/test-support",
 ]
@@ -29,7 +28,6 @@ ctor.workspace = true
 buffer_diff.workspace = true
 gpui.workspace = true
 itertools.workspace = true
-language.workspace = true
 log.workspace = true
 parking_lot.workspace = true
 rand.workspace = true
@@ -41,7 +39,6 @@ smallvec.workspace = true
 sum_tree.workspace = true
 text.workspace = true
 theme.workspace = true
-tree-sitter.workspace = true
 util.workspace = true
 workspace-hack.workspace = true
 
@@ -49,7 +46,6 @@ workspace-hack.workspace = true
 buffer_diff = { workspace = true, features = ["test-support"] }
 gpui = { workspace = true, features = ["test-support"] }
 indoc.workspace = true
-language = { workspace = true, features = ["test-support"] }
 pretty_assertions.workspace = true
 project = { workspace = true, features = ["test-support"] }
 rand.workspace = true

@@ -386,7 +386,7 @@
     // Whether to show cursor positions in the scrollbar.
     "cursors": true,
     // Whether to show git diff indicators in the scrollbar.
-    "git_diff": true,
+    "git_diff": false,
     // Whether to show buffer search results in the scrollbar.
     "search_results": true,
     // Whether to show selected text occurrences in the scrollbar.
@@ -589,7 +589,7 @@
     // Whether to show folder icons or chevrons for directories in the project panel.
     "folder_icons": true,
     // Whether to show the git status in the project panel.
-    "git_status": true,
+    "git_status": false,
     // Amount of indentation for nested items.
     "indent_size": 20,
     // Whether to reveal it in the project panel automatically,
@@ -597,7 +597,7 @@
     // Gitignored entries are never auto revealed.
     "auto_reveal_entries": true,
     // Whether the project panel should open on startup.
-    "starts_open": true,
+    "starts_open": false,
     // Whether to fold directories automatically and show compact folders
     // (e.g. "a/b/c" ) when a directory has only one subdirectory inside.
     "auto_fold_dirs": true,
@@ -656,7 +656,7 @@
     // Whether to show folder icons or chevrons for directories in the outline panel.
     "folder_icons": true,
     // Whether to show the git status in the outline panel.
-    "git_status": true,
+    "git_status": false,
     // Amount of indentation for nested items.
     "indent_size": 20,
     // Whether to reveal it in the outline panel automatically,
@@ -718,7 +718,7 @@
   },
   "git_panel": {
     // Whether to show the git panel button in the status bar.
-    "button": true,
+    "button": false,
     // Where to show the git panel. Can be 'left' or 'right'.
     "dock": "left",
     // Default width of the git panel.
@@ -897,14 +897,14 @@
   // Whether the screen sharing icon is shown in the os status bar.
   "show_call_status_icon": true,
   // Whether to use language servers to provide code intelligence.
-  "enable_language_server": true,
+  "enable_language_server": false,
   // Whether to perform linked edits of associated ranges, if the language server supports it.
   // For example, when editing opening <html> tag, the contents of the closing </html> tag will be edited as well.
-  "linked_edits": true,
+  "linked_edits": false,
   // The list of language servers to use (or disable) for all languages.
   //
   // This is typically customized on a per-language basis.
-  "language_servers": ["..."],
+  "language_servers": [],
   // When to automatically save edited buffers. This setting can
   // take four values.
   //
@@ -1013,7 +1013,7 @@
     // Default: true
     "skip_focus_for_active_in_search": true,
     // Whether to show the git status in the file finder.
-    "git_status": true,
+    "git_status": false,
     // Whether to use gitignored files when searching.
     // Only the file Zed had indexed will be used, not necessary all the gitignored files.
     //
@@ -1033,7 +1033,7 @@
   "ensure_final_newline_on_save": true,
   // Whether or not to perform a buffer format before saving: [on, off, prettier, language_server]
   // Keep in mind, if the autosave with delay is enabled, format_on_save will be ignored
-  "format_on_save": "on",
+  "format_on_save": "off",
   // How to perform a buffer format. This setting can take 4 values:
   //
   // 1. Format code using the current language server:
@@ -1100,7 +1100,7 @@
   //      "lsp_document_colors": "border",
   // 4. Draw a background behind the color text..
   //      "lsp_document_colors": "background",
-  "lsp_document_colors": "inlay",
+  "lsp_document_colors": "none",
   // Diagnostics configuration.
   "diagnostics": {
     // Whether to show the project diagnostics button in the status bar.
@@ -1110,7 +1110,7 @@
     // Settings for using LSP pull diagnostics mechanism in Zed.
     "lsp_pull_diagnostics": {
       // Whether to pull for diagnostics or not.
-      "enabled": true,
+      "enabled": false,
       // Minimum time to wait before pulling diagnostics from the language server(s).
       // 0 turns the debounce off.
       "debounce_ms": 50
@@ -1165,11 +1165,11 @@
     //      "git_gutter": "tracked_files"
     // 2. Hide the gutter
     //      "git_gutter": "hide"
-    "git_gutter": "tracked_files",
+    "git_gutter": "hide",
     // Control whether the git blame information is shown inline,
     // in the currently focused line.
     "inline_blame": {
-      "enabled": true,
+      "enabled": false,
       // Sets a delay after which the inline blame information is shown.
       // Delay is restarted with every cursor movement.
       "delay_ms": 0,

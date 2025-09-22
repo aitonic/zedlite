@@ -14,27 +14,37 @@
 //! If you're looking to improve Vim mode, you should check out Vim crate that wraps Editor and overrides its behavior.
 pub mod actions;
 mod blink_manager;
+#[cfg(feature = "coding")]
 mod clangd_ext;
+#[cfg(feature = "coding")]
 pub mod code_context_menus;
 pub mod display_map;
 mod editor_settings;
 mod editor_settings_controls;
 mod element;
+#[cfg(feature = "coding")]
 mod git;
 mod highlight_matching_bracket;
 mod hover_links;
+#[cfg(feature = "coding")]
 pub mod hover_popover;
 mod indent_guides;
+#[cfg(feature = "coding")]
 mod inlay_hint_cache;
+#[cfg(feature = "coding")]
 pub mod items;
 mod jsx_tag_auto_close;
 mod linked_editing_ranges;
+#[cfg(feature = "coding")]
 mod lsp_colors;
+#[cfg(feature = "coding")]
 mod lsp_ext;
 mod mouse_context_menu;
 pub mod movement;
 mod persistence;
+#[cfg(feature = "coding")]
 mod proposed_changes_editor;
+#[cfg(feature = "coding")]
 mod rust_analyzer_ext;
 pub mod scroll;
 mod selections_collection;

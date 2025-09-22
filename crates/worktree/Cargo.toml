@@ -16,7 +16,6 @@ workspace = true
 test-support = [
     "gpui/test-support",
     "http_client/test-support",
-    "language/test-support",
     "settings/test-support",
     "text/test-support",
     "util/test-support",
@@ -32,7 +31,6 @@ fuzzy.workspace = true
 git.workspace = true
 gpui.workspace = true
 ignore.workspace = true
-language.workspace = true
 log.workspace = true
 parking_lot.workspace = true
 paths.workspace = true

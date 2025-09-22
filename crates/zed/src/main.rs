@@ -25,6 +25,8 @@ use reqwest_client::ReqwestClient;
 
 use assets::Assets;
 use node_runtime::{NodeBinaryOptions, NodeRuntime};
+#[cfg(feature = "writer")]
+use manuscript_panel::ManuscriptPanel;
 use parking_lot::Mutex;
 use project::project_settings::ProjectSettings;
 use recent_projects::{SshSettings, open_ssh_project};
@@ -617,6 +619,9 @@ pub fn main() {
         outline::init(cx);
         #[cfg(not(feature = "writer"))]
         project_symbols::init(cx);
+        #[cfg(feature = "writer")]
+        ManuscriptPanel::register(cx);
+        #[cfg(not(feature = "writer"))]
         project_panel::init(cx);
         outline_panel::init(cx);
         #[cfg(not(feature = "writer"))]

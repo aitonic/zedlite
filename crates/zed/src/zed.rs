@@ -43,7 +43,10 @@ use paths::{
     local_tasks_file_relative_path,
 };
 use project::{DirectoryLister, ProjectItem};
+#[cfg(not(feature = "writer"))]
 use project_panel::ProjectPanel;
+#[cfg(feature = "writer")]
+use manuscript_panel::ManuscriptPanel;
 use prompt_store::PromptBuilder;
 use quick_action_bar::QuickActionBar;
 use recent_projects::open_ssh_project;
@@ -623,7 +626,7 @@ fn initialize_panels_writer(
     let prompt_builder = prompt_builder.clone();
 
     cx.spawn_in(window, async move |workspace_handle, cx| {
-        let project_panel = ProjectPanel::load(workspace_handle.clone(), cx.clone());
+        let manuscript_panel = ManuscriptPanel::load(workspace_handle.clone(), cx.clone());
         let outline_panel = OutlinePanel::load(workspace_handle.clone(), cx.clone());
         let channels_panel =
             collab_ui::collab_panel::CollabPanel::load(workspace_handle.clone(), cx.clone());
@@ -634,9 +637,9 @@ fn initialize_panels_writer(
             cx.clone(),
         );
 
-        let (project_panel, outline_panel, channels_panel, chat_panel, notification_panel) =
+        let (manuscript_panel, outline_panel, channels_panel, chat_panel, notification_panel) =
             futures::try_join!(
-                project_panel,
+                manuscript_panel,
                 outline_panel,
                 channels_panel,
                 chat_panel,
@@ -644,7 +647,7 @@ fn initialize_panels_writer(
             )?;
 
         workspace_handle.update_in(cx, |workspace, window, cx| {
-            workspace.add_panel(project_panel, window, cx);
+            workspace.add_panel(manuscript_panel, window, cx);
             workspace.add_panel(outline_panel, window, cx);
             workspace.add_panel(channels_panel, window, cx);
             workspace.add_panel(chat_panel, window, cx);
@@ -898,15 +901,29 @@ fn register_actions(
         })
         .register_action(open_project_settings_file)
         .register_action(open_project_tasks_file)
-        .register_action(open_project_debug_tasks_file)
-        .register_action(
-            |workspace: &mut Workspace,
-             _: &project_panel::ToggleFocus,
-             window: &mut Window,
-             cx: &mut Context<Workspace>| {
-                workspace.toggle_panel_focus::<ProjectPanel>(window, cx);
-            },
-        )
+        .register_action(open_project_debug_tasks_file);
+
+    #[cfg(feature = "writer")]
+    workspace.register_action(
+        |workspace: &mut Workspace,
+         _: &manuscript_panel::ToggleFocus,
+         window: &mut Window,
+         cx: &mut Context<Workspace>| {
+            workspace.toggle_panel_focus::<ManuscriptPanel>(window, cx);
+        },
+    );
+
+    #[cfg(not(feature = "writer"))]
+    workspace.register_action(
+        |workspace: &mut Workspace,
+         _: &project_panel::ToggleFocus,
+         window: &mut Window,
+         cx: &mut Context<Workspace>| {
+            workspace.toggle_panel_focus::<ProjectPanel>(window, cx);
+        },
+    );
+
+    workspace
         .register_action(
             |workspace: &mut Workspace,
              _: &outline_panel::ToggleFocus,
