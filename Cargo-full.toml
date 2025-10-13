@@ -1,128 +1,172 @@
 [workspace]
 resolver = "2"
-
-# TEXT-ONLY BUILD: Novel Writing Tool
-# Using complete external dependencies but minimal workspace members
-
 members = [
-    # Core infrastructure
-    "crates/assets",
-    "crates/editor", 
-    "crates/text",
-    "crates/ui",
-    "crates/gpui",
-    "crates/gpui_macros",
-    "crates/gpui_tokio",
-    "crates/settings",
-    "crates/util",
-    "crates/util_macros",
-    "crates/workspace",
-    "crates/panel",
-    "crates/menu",
-    "crates/picker",
-    
-    # Text and document handling
-    "crates/markdown",
-    "crates/markdown_preview",
-    "crates/multi_buffer",
-    "crates/rich_text",
-    "crates/rope",
-    "crates/buffer_diff",
-    
-    # Novel writing specific
-    "crates/manuscript_panel",
-    
-    # Agent and AI functionality (essential for novel writing)
+    "crates/acp_thread",
+    "crates/action_log",
+    "crates/activity_indicator",
     "crates/agent",
     "crates/agent2",
     "crates/agent_servers",
     "crates/agent_settings",
     "crates/agent_ui",
+    "crates/ai_onboarding",
+    "crates/anthropic",
+    "crates/askpass",
+    "crates/assets",
     "crates/assistant_context",
     "crates/assistant_slash_command",
     "crates/assistant_slash_commands",
     "crates/assistant_tool",
     "crates/assistant_tools",
-    "crates/context_server",
-    "crates/prompt_store",
-    
-    # AI providers
-    "crates/anthropic",
-    "crates/open_ai",
-    "crates/open_router",
-    "crates/google_ai",
-    "crates/ollama",
-    "crates/bedrock",
-    "crates/deepseek",
-    "crates/mistral",
-    "crates/vercel",
-    "crates/x_ai",
-    "crates/lmstudio",
-    
-    # Core utilities
-    "crates/collections",
-    "crates/fs",
-    "crates/http_client",
-    "crates/http_client_tls",
-    "crates/paths",
-    "crates/clock",
-    "crates/sum_tree",
-    "crates/sqlez",
-    "crates/sqlez_macros",
-    "crates/db",
-    "crates/semantic_version",
-    "crates/refineable",
-    "crates/refineable/derive_refineable",
-    
-    # UI components (essential)
-    "crates/theme",
-    "crates/theme_selector",
-    "crates/ui_macros",
-    "crates/ui_input", 
-    "crates/ui_prompt",
-    "crates/icons",
-    "crates/file_icons",
-    "crates/activity_indicator",
-    "crates/title_bar",
-    "crates/welcome",
-    "crates/onboarding",
-    
-    # File handling (essential for manuscript management)
-    "crates/file_finder",
-    "crates/fuzzy",
-    "crates/streaming_diff",
-    
-    # Networking and clients (needed for AI)
-    "crates/client",
-    "crates/rpc",
-    "crates/proto",
-    "crates/net",
-    "crates/reqwest_client",
+    "crates/audio",
+    "crates/auto_update",
+    "crates/auto_update_helper",
+    "crates/auto_update_ui",
     "crates/aws_http_client",
+    "crates/bedrock",
+    "crates/breadcrumbs",
+    "crates/buffer_diff",
+    "crates/call",
+    "crates/channel",
+    "crates/cli",
+    "crates/client",
+    "crates/clock",
     "crates/cloud_api_client",
     "crates/cloud_api_types",
     "crates/cloud_llm_client",
-    
-    # Core app
-    "crates/zedlite_app",
-    "crates/zed_actions",
-    
-    # Essential support
-    "crates/task", 
+    "crates/collab",
+    "crates/collab_ui",
+    "crates/collections",
+    "crates/command_palette",
+    "crates/command_palette_hooks",
+    "crates/component",
+    "crates/context_server",
+    "crates/crashes",
+    "crates/credentials_provider",
+    "crates/db",
+    "crates/deepseek",
+    "crates/docs_preprocessor",
+    "crates/editor",
+    "crates/eval",
+    "crates/explorer_command_injector",
+    "crates/feature_flags",
+    "crates/feedback",
+    "crates/file_finder",
+    "crates/file_icons",
+    "crates/fs",
+    "crates/fsevent",
+    "crates/fuzzy",
+    "crates/git",
+    "crates/git_ui",
+    "crates/go_to_line",
+    "crates/google_ai",
+    "crates/gpui",
+    "crates/gpui_macros",
+    "crates/gpui_tokio",
+    "crates/html_to_markdown",
+    "crates/http_client",
+    "crates/http_client_tls",
+    "crates/icons",
+    "crates/image_viewer",
+    "crates/indexed_docs",
+    "crates/edit_prediction",
+    "crates/edit_prediction_button",
+    "crates/inspector_ui",
+    "crates/install_cli",
+    "crates/jj",
+    "crates/jj_ui",
+    "crates/journal",
+    "crates/livekit_api",
+    "crates/livekit_client",
+    "crates/lmstudio",
+    "crates/markdown",
+    "crates/markdown_preview",
+    "crates/media",
+    "crates/menu",
+    "crates/migrator",
+    "crates/mistral",
+    "crates/manuscript_panel",
+    "crates/multi_buffer",
+    "crates/nc",
+    "crates/net",
+    "crates/notifications",
+    "crates/ollama",
+    "crates/onboarding",
+    "crates/open_ai",
+    "crates/open_router",
+    "crates/outline",
+    "crates/outline_panel",
+    "crates/panel",
+    "crates/paths",
+    "crates/picker",
+    "crates/project",
+    "crates/project_panel",
+    "crates/prompt_store",
+    "crates/proto",
+    "crates/recent_projects",
+    "crates/refineable",
+    "crates/refineable/derive_refineable",
+    "crates/release_channel",
+    "crates/remote",
+    "crates/remote_server",
+    "crates/reqwest_client",
+    "crates/rich_text",
+    "crates/rope",
+    "crates/rpc",
+    "crates/schema_generator",
+    "crates/search",
+    "crates/semantic_version",
+    "crates/session",
+    "crates/settings",
+    "crates/settings_profile_selector",
+    "crates/settings_ui",
+    "crates/sqlez",
+    "crates/sqlez_macros",
     "crates/story",
     "crates/storybook",
-    "crates/component",
+    "crates/streaming_diff",
+    "crates/sum_tree",
+    "crates/svg_preview",
+    "crates/tab_switcher",
+    "crates/task",
+    "crates/tasks_ui",
+    "crates/telemetry",
+    "crates/telemetry_events",
+    "crates/text",
+    "crates/theme",
+    "crates/theme_importer",
+    "crates/theme_selector",
     "crates/time_format",
-    "crates/feature_flags",
-    "crates/session",
-    "crates/crashes",
+    "crates/title_bar",
+    "crates/ui",
+    "crates/ui_input",
+    "crates/ui_macros",
+    "crates/ui_prompt",
+    "crates/util",
+    "crates/util_macros",
+    "crates/vercel",
     "crates/watch",
-    
+    "crates/web_search",
+    "crates/web_search_providers",
+    "crates/welcome",
+    "crates/workspace",
+    "crates/worktree",
+    "crates/x_ai",
+    "crates/zed",
+    "crates/zed_actions",
+    "crates/zedlite_app",
+    "crates/zeta",
+    "crates/zeta_cli",
+    "crates/zlog",
+    "crates/zlog_settings",
+
+    #
     # Tooling
+    #
+
     "tooling/workspace-hack",
     "tooling/xtask",
 ]
-
 default-members = ["crates/zedlite_app"]
 
 [workspace.package]
@@ -329,7 +373,7 @@ zlog = { path = "crates/zlog" }
 zlog_settings = { path = "crates/zlog_settings" }
 
 #
-# External crates (COMPLETE SET from full version)
+# External crates
 #
 
 agentic-coding-protocol = "0.0.10"
@@ -570,6 +614,8 @@ which = "6.0.0"
 windows-core = "0.61"
 wit-component = "0.221"
 workspace-hack = "0.1.0"
+# We can switch back to the published version once https://github.com/infinitefield/yawc/pull/16 is merged and a new
+# version is released.
 yawc = { git = "https://github.com/deviant-forks/yawc", rev = "1899688f3e69ace4545aceb97b2a13881cf26142" }
 zstd = "0.11"
 
@@ -762,7 +808,6 @@ too_many_arguments = "allow"
 
 # We often have large enum variants yet we rarely actually bother with splitting them up.
 large_enum_variant = "allow"
-
 [workspace.metadata.cargo-machete]
 ignored = [
     "bindgen",
@@ -773,3 +818,6 @@ ignored = [
     "documented",
     "workspace-hack",
 ]
+
+# Read the file content to understand workspace structure
+

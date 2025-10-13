@@ -1,0 +1,478 @@
+[workspace]
+resolver = "2"
+
+# TEXT-ONLY BUILD: Novel Writing Tool
+# This is a simplified version with coding features removed
+# To use: mv Cargo.toml Cargo-full.toml && mv Cargo-text-only.toml Cargo.toml
+
+members = [
+    # Core infrastructure
+    "crates/assets",
+    "crates/editor", 
+    "crates/text",
+    "crates/ui",
+    "crates/gpui",
+    "crates/gpui_macros",
+    "crates/gpui_tokio",
+    "crates/settings",
+    "crates/util",
+    "crates/util_macros",
+    "crates/workspace",
+    "crates/panel",
+    "crates/menu",
+    "crates/picker",
+    
+    # Text and document handling
+    "crates/markdown",
+    "crates/markdown_preview",
+    "crates/multi_buffer",
+    "crates/rich_text",
+    "crates/rope",
+    "crates/buffer_diff",
+    
+    # Novel writing specific
+    "crates/manuscript_panel",
+    
+    # Agent and AI functionality (essential for novel writing)
+    "crates/agent",
+    "crates/agent2",
+    "crates/agent_servers",
+    "crates/agent_settings",
+    "crates/agent_ui",
+    "crates/assistant_context",
+    "crates/assistant_slash_command",
+    "crates/assistant_slash_commands",
+    "crates/assistant_tool",
+    "crates/assistant_tools",
+    "crates/context_server",
+    "crates/prompt_store",
+    
+    # AI providers
+    "crates/anthropic",
+    "crates/open_ai",
+    "crates/open_router",
+    "crates/google_ai",
+    "crates/ollama",
+    "crates/bedrock",
+    "crates/deepseek",
+    "crates/mistral",
+    "crates/vercel",
+    "crates/x_ai",
+    "crates/lmstudio",
+    
+    # Core utilities
+    "crates/collections",
+    "crates/fs",
+    "crates/http_client",
+    "crates/http_client_tls",
+    "crates/paths",
+    "crates/clock",
+    "crates/sum_tree",
+    "crates/sqlez",
+    "crates/sqlez_macros",
+    "crates/db",
+    "crates/semantic_version",
+    "crates/refineable",
+    "crates/refineable/derive_refineable",
+    
+    # UI components (essential)
+    "crates/theme",
+    "crates/theme_selector",
+    "crates/ui_macros",
+    "crates/ui_input", 
+    "crates/ui_prompt",
+    "crates/icons",
+    "crates/file_icons",
+    "crates/activity_indicator",
+    "crates/title_bar",
+    "crates/welcome",
+    "crates/onboarding",
+    
+    # File handling (essential for manuscript management)
+    "crates/file_finder",
+    "crates/fuzzy",
+    "crates/streaming_diff",
+    
+    # Networking and clients (needed for AI)
+    "crates/client",
+    "crates/rpc",
+    "crates/proto",
+    "crates/net",
+    "crates/reqwest_client",
+    "crates/aws_http_client",
+    "crates/cloud_api_client",
+    "crates/cloud_api_types",
+    "crates/cloud_llm_client",
+    
+    # Core app
+    "crates/zedlite_app",
+    "crates/zed_actions",
+    
+    # Essential support
+    "crates/task", 
+    "crates/story",
+    "crates/storybook",
+    "crates/component",
+    "crates/time_format",
+    "crates/feature_flags",
+    "crates/session",
+    "crates/crashes",
+    "crates/watch",
+    
+    # Tooling
+    "tooling/workspace-hack",
+    "tooling/xtask",
+]
+
+# REMOVED CRATES (Coding/IDE features):
+# - language/* (LSP, syntax highlighting, language support)
+# - git/* and jj/* (version control)
+# - dap/* and debugger* (debugging tools)
+# - extension* (extension system)
+# - terminal* (terminal functionality)
+# - project/project_panel (project management for code)
+# - search (code search)
+# - outline/outline_panel (code outline)
+# - prettier (code formatting)
+# - vim/* (vim mode)
+# - snippet* (code snippets)
+# - copilot/supermaven (code completion)
+# - diagnostics (code diagnostics)
+# - node_runtime (JavaScript/Node.js support)
+# - worktree (workspace tree management)
+# - recent_projects (recent projects panel)
+# - command_palette* (coding-focused commands)
+
+default-members = ["crates/zedlite_app"]
+
+[workspace.package]
+publish = false
+edition = "2024"
+
+[workspace.dependencies]
+
+# Novel writing
+manuscript_panel = { path = "crates/manuscript_panel" }
+
+# Core infrastructure
+assets = { path = "crates/assets" }
+editor = { path = "crates/editor" }
+text = { path = "crates/text" }
+ui = { path = "crates/ui" }
+gpui = { path = "crates/gpui", default-features = false, features = ["http_client"] }
+gpui_macros = { path = "crates/gpui_macros" }
+gpui_tokio = { path = "crates/gpui_tokio" }
+settings = { path = "crates/settings" }
+util = { path = "crates/util" }
+util_macros = { path = "crates/util_macros" }
+workspace = { path = "crates/workspace" }
+panel = { path = "crates/panel" }
+menu = { path = "crates/menu" }
+picker = { path = "crates/picker" }
+
+# Document handling
+markdown = { path = "crates/markdown" }
+markdown_preview = { path = "crates/markdown_preview" }
+multi_buffer = { path = "crates/multi_buffer" }
+rich_text = { path = "crates/rich_text" }
+rope = { path = "crates/rope" }
+buffer_diff = { path = "crates/buffer_diff" }
+
+# Agent and AI
+agent = { path = "crates/agent" }
+agent2 = { path = "crates/agent2" }
+agent_servers = { path = "crates/agent_servers" }
+agent_settings = { path = "crates/agent_settings" }
+agent_ui = { path = "crates/agent_ui" }
+assistant_context = { path = "crates/assistant_context" }
+assistant_slash_command = { path = "crates/assistant_slash_command" }
+assistant_slash_commands = { path = "crates/assistant_slash_commands" }
+assistant_tool = { path = "crates/assistant_tool" }
+assistant_tools = { path = "crates/assistant_tools" }
+context_server = { path = "crates/context_server" }
+prompt_store = { path = "crates/prompt_store" }
+
+# AI providers
+anthropic = { path = "crates/anthropic" }
+open_ai = { path = "crates/open_ai" }
+open_router = { path = "crates/open_router", features = ["schemars"] }
+google_ai = { path = "crates/google_ai" }
+ollama = { path = "crates/ollama" }
+bedrock = { path = "crates/bedrock" }
+deepseek = { path = "crates/deepseek" }
+mistral = { path = "crates/mistral" }
+vercel = { path = "crates/vercel" }
+x_ai = { path = "crates/x_ai" }
+lmstudio = { path = "crates/lmstudio" }
+
+# Utilities
+collections = { path = "crates/collections" }
+fs = { path = "crates/fs" }
+http_client = { path = "crates/http_client" }
+http_client_tls = { path = "crates/http_client_tls" }
+paths = { path = "crates/paths" }
+clock = { path = "crates/clock" }
+sum_tree = { path = "crates/sum_tree" }
+sqlez = { path = "crates/sqlez" }
+sqlez_macros = { path = "crates/sqlez_macros" }
+db = { path = "crates/db" }
+semantic_version = { path = "crates/semantic_version" }
+refineable = { path = "crates/refineable" }
+
+# UI
+theme = { path = "crates/theme" }
+theme_selector = { path = "crates/theme_selector" }
+ui_macros = { path = "crates/ui_macros" }
+ui_input = { path = "crates/ui_input" }
+ui_prompt = { path = "crates/ui_prompt" }
+icons = { path = "crates/icons" }
+file_icons = { path = "crates/file_icons" }
+activity_indicator = { path = "crates/activity_indicator" }
+title_bar = { path = "crates/title_bar" }
+welcome = { path = "crates/welcome" }
+onboarding = { path = "crates/onboarding" }
+
+# File handling
+file_finder = { path = "crates/file_finder" }
+fuzzy = { path = "crates/fuzzy" }
+streaming_diff = { path = "crates/streaming_diff" }
+
+# Networking
+client = { path = "crates/client" }
+rpc = { path = "crates/rpc" }
+proto = { path = "crates/proto" }
+net = { path = "crates/net" }
+reqwest_client = { path = "crates/reqwest_client" }
+aws_http_client = { path = "crates/aws_http_client" }
+cloud_api_client = { path = "crates/cloud_api_client" }
+cloud_api_types = { path = "crates/cloud_api_types" }
+cloud_llm_client = { path = "crates/cloud_llm_client" }
+
+# Core app
+zedlite_app = { path = "crates/zedlite_app" }
+zed_actions = { path = "crates/zed_actions" }
+
+# Support
+task = { path = "crates/task" }
+story = { path = "crates/story" }
+storybook = { path = "crates/storybook" }
+component = { path = "crates/component" }
+time_format = { path = "crates/time_format" }
+feature_flags = { path = "crates/feature_flags" }
+session = { path = "crates/session" }
+crashes = { path = "crates/crashes" }
+watch = { path = "crates/watch" }
+
+# External dependencies (minimal)
+anyhow = "1.0.86"
+serde = { version = "1.0", features = ["derive", "rc"] }
+serde_json = { version = "1.0", features = ["preserve_order", "raw_value"] }
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.1.2", features = ["v4", "v5", "v7", "serde"] }
+tokio = { version = "1" }
+regex = "1.5"
+futures = "0.3"
+log = { version = "0.4.16", features = ["kv_unstable_serde", "serde"] }
+thiserror = "2.0.12"
+smallvec = { version = "1.6", features = ["union"] }
+indexmap = { version = "2.7.0", features = ["serde"] }
+parking_lot = "0.12.1"
+tempfile = "3.20.0"
+toml = "0.8"
+dirs = "4.0"
+url = "2.2"
+time = { version = "0.3", features = ["macros", "parsing", "serde", "serde-well-known", "formatting"] }
+
+# Essential async/networking
+futures-lite = "1.13"
+async-trait = "0.1"
+base64 = "0.22"
+bytes = "1.0"
+http = "1.1"
+dashmap = "6.0"
+derive_more = "0.99.17"
+hex = "0.4.3"
+itertools = "0.14.0"
+libc = "0.2"
+nanoid = "0.4"
+rand = "0.8.5"
+rustc-hash = "2.1.0"
+sha2 = "0.10"
+strum = { version = "0.27.0", features = ["derive"] }
+workspace-hack = { path = "tooling/workspace-hack" }
+
+# Additional dependencies needed by included crates (essential subset)
+rust-embed = { version = "8.4", features = ["include-exclude"] }
+async-compression = { version = "0.4", features = ["gzip", "futures-io"] }
+async-fs = "2.1"
+async-recursion = "1.0.0"
+async-tungstenite = "0.29.1"
+arrayvec = { version = "0.7.4", features = ["serde"] }
+aws-config = { version = "1.6.1", features = ["behavior-version-latest"] }
+aws-credential-types = { version = "1.2.2", features = ["hardcoded-credentials"] }
+aws-sdk-bedrockruntime = { version = "1.80.0", features = ["behavior-version-latest"] }
+aws-smithy-runtime-api = { version = "1.7.4", features = ["http-1x", "client"] }
+aws-smithy-types = { version = "1.3.0", features = ["http-body-1-x"] }
+blake3 = "1.5.3"
+bitflags = "2.6.0"
+blade-graphics = { git = "https://github.com/kvark/blade", rev = "e0ec4e720957edd51b945b64dd85605ea54bcfe5" }
+blade-macros = { git = "https://github.com/kvark/blade", rev = "e0ec4e720957edd51b945b64dd85605ea54bcfe5" }
+blade-util = { git = "https://github.com/kvark/blade", rev = "e0ec4e720957edd51b945b64dd85605ea54bcfe5" }
+clap = { version = "4.4", features = ["derive"] }
+cocoa = "0.26"
+cocoa-foundation = "0.2.0"
+convert_case = "0.8.0"
+core-foundation = "0.10.0"
+core-foundation-sys = "0.8.6"
+core-video = { version = "0.4.3", features = ["metal"] }
+cpal = "0.16"
+emojis = "0.6.1"
+env_logger = "0.11"
+fancy-regex = "0.14.0"
+globset = "0.4"
+handlebars = "4.3"
+heck = "0.5"
+http-body = "1.0"
+ignore = "0.4.22"
+image = "0.25.1"
+imara-diff = "0.1.8"
+indoc = "2"
+inventory = "0.3.19"
+json_dotpath = "1.1"
+jsonschema = "0.30.0"
+jsonwebtoken = "9.3"
+linkify = "0.10.0"
+metal = "0.29"
+moka = { version = "0.12.10", features = ["sync"] }
+naga = { version = "25.0", features = ["wgsl-in"] }
+nix = "0.29"
+num-format = "0.4.4"
+objc = "0.2"
+open = "5.0.0"
+ordered-float = "2.1.1"
+palette = { version = "0.7.5", default-features = false, features = ["std"] }
+partial-json-fixer = "0.5.3"
+parse_int = "0.9"
+pathdiff = "0.2"
+portable-pty = "0.9.0"
+postage = { version = "0.5", features = ["futures-traits"] }
+pretty_assertions = { version = "1.3.0", features = ["unstable"] }
+proc-macro2 = "1.0.93"
+profiling = "1"
+pulldown-cmark = { version = "0.12.0", default-features = false }
+quote = "1.0.9"
+rayon = "1.8"
+ref-cast = "1.0.24"
+reqwest = { git = "https://github.com/zed-industries/reqwest.git", rev = "951c770a32f1998d6e999cef3e59e0013e6c4415", default-features = false, features = [
+    "charset",
+    "http2",
+    "macos-system-configuration",
+    "multipart",
+    "rustls-tls-native-roots",
+    "socks",
+    "stream",
+] }
+rsa = "0.9.6"
+rustc-demangle = "0.1.23"
+rustls = { version = "0.23.26" }
+rustls-platform-verifier = "0.5.0"
+schemars = { version = "1.0", features = ["indexmap2"] }
+semver = "1.0"
+serde_derive = { version = "1.0", features = ["deserialize_in_place"] }
+serde_json_lenient = { version = "0.2", features = ["preserve_order", "raw_value"] }
+serde_repr = "0.1"
+shellexpand = "2.1.0"
+shlex = "1.3.0"
+simplelog = "0.12.2"
+smol = "2.0"
+sqlformat = "0.2"
+streaming-iterator = "0.1"
+strsim = "0.11"
+subtle = "2.5.0"
+syn = { version = "2.0.101", features = ["full", "extra-traits"] }
+sys-locale = "0.3.1"
+sysinfo = "0.31.0"
+take-until = "0.2.0"
+tiny_http = "0.8"
+tokio-tungstenite = { version = "0.26", features = ["__rustls-tls"] }
+tower-http = "0.4.4"
+unicase = "2.6"
+unicode-script = "0.5.7"
+unicode-segmentation = "1.10"
+unindent = "0.2.0"
+urlencoding = "2.1.2"
+walkdir = "2.5"
+which = "6.0.0"
+windows-core = "0.61"
+
+[workspace.dependencies.windows]
+version = "0.61"
+features = [
+    "Foundation_Numerics",
+    "Storage_Search",
+    "Storage_Streams",
+    "System_Threading",
+    "UI_ViewManagement",
+    "Wdk_System_SystemServices",
+    "Win32_Globalization",
+    "Win32_Graphics_Direct3D",
+    "Win32_Graphics_Direct3D11",
+    "Win32_Graphics_Direct3D_Fxc",
+    "Win32_Graphics_DirectComposition",
+    "Win32_Graphics_DirectWrite",
+    "Win32_Graphics_Dwm",
+    "Win32_Graphics_Dxgi",
+    "Win32_Graphics_Dxgi_Common",
+    "Win32_Graphics_Gdi",
+    "Win32_Graphics_Imaging",
+    "Win32_Networking_WinSock",
+    "Win32_Security",
+    "Win32_Security_Credentials",
+    "Win32_Storage_FileSystem",
+    "Win32_System_Com",
+    "Win32_System_Com_StructuredStorage",
+    "Win32_System_Console",
+    "Win32_System_DataExchange",
+    "Win32_System_IO",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Memory",
+    "Win32_System_Ole",
+    "Win32_System_Pipes",
+    "Win32_System_SystemInformation",
+    "Win32_System_SystemServices",
+    "Win32_System_Threading",
+    "Win32_System_Variant",
+    "Win32_System_WinRT",
+    "Win32_UI_Controls",
+    "Win32_UI_HiDpi",
+    "Win32_UI_Input_Ime",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_UI_Shell",
+    "Win32_UI_Shell_Common",
+    "Win32_UI_Shell_PropertiesSystem",
+    "Win32_UI_WindowsAndMessaging",
+]
+
+[profile.dev]
+split-debuginfo = "unpacked"
+codegen-units = 8  # Reduced for faster builds with fewer crates
+
+[profile.release] 
+debug = "limited"
+lto = "thin"
+codegen-units = 1
+
+[workspace.lints.rust]
+unexpected_cfgs = { level = "allow" }
+
+[workspace.lints.clippy]
+dbg_macro = "deny"
+todo = "deny"
+single_range_in_vec_init = "allow"
+style = { level = "allow", priority = -1 }
+type_complexity = "allow"
+new_ret_no_self = { level = "allow" }
+should_implement_trait = { level = "allow" }
+let_underscore_future = "allow"
+too_many_arguments = "allow"
+large_enum_variant = "allow"
